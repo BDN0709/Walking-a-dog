@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 #include "Debts.h"
 
@@ -15,13 +14,13 @@ enum Walker
 	Eva, Timur
 };
 
-int Menu(vector<Debt>& Tims, vector <Debt>& Eves, SYSTEMTIME& lt)
+int Menu(vector <Debt>& Tims, vector <Debt>& Eves)
 {
 	while (true)
 	{
 		system("cls");
 
-		ShowTime(lt);
+		ShowTime();
 		ShowWhoseDay(Timur);
 
 		shared_ptr <double> answer (new double);
@@ -125,12 +124,17 @@ void ShowDebtsList(vector <Debt>& whoose, const Walker& walker)
 
 
 
-void ShowTime(SYSTEMTIME& lt)
-{   // gets real time and displays it
-	GetLocalTime(&lt);
 
-	printf("Сегодня: %02d.%02d.%04d\n", lt.wDay, lt.wMonth, lt.wYear);
-	printf("Сейчас:  %02d:%02d:%02d\n", lt.wHour, lt.wMinute, lt.wSecond);
+void ShowTime()
+{   // gets real time and displays it
+	shared_ptr <SYSTEMTIME> lt (new SYSTEMTIME);
+
+	GetLocalTime(&(*lt));
+
+	printf("Сегодня: %02d.%02d.%04d\n", lt->wDay, lt->wMonth, lt->wYear);
+	printf("Сейчас:  %02d:%02d:%02d\n", lt->wHour, lt->wMinute, lt->wSecond);
+
+	return;
 }
 
 void ShowWhoseDay(const Walker& walker)
@@ -155,6 +159,8 @@ void ShowWhoseDay(const Walker& walker)
 	SelectObject(hdc, p1);  // Возвращаем старое значение
 	ReleaseDC(hwnd, hdc);   // Освобождаем контекст рисования
 	DeleteObject(p2);       // Удаляем созданное перо
+
+	return;
 }
 
 void MsgBox(const char* Name, const char* Text)
@@ -165,4 +171,6 @@ void MsgBox(const char* Name, const char* Text)
 	GetConsoleTitle(Title, 100);
 	hwnd = FindWindow(NULL, Title); // Узнаем hwnd окна
 	MessageBoxA(hwnd, Text, Name, NULL);
+
+	return;
 }

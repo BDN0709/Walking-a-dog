@@ -17,16 +17,16 @@ public:
 
 	Date()
 	{
-		SYSTEMTIME lt;
+		shared_ptr <SYSTEMTIME> lt (new SYSTEMTIME);
 
-		GetLocalTime(&lt);
+		GetLocalTime(&(*lt));
 
-		Second = lt.wSecond;
-		Minute = lt.wMinute;
-		Hour = lt.wHour;
-		Day = lt.wDay;
-		Month = lt.wMonth;
-		Year = lt.wYear;
+		Second = lt->wSecond;
+		Minute = lt->wMinute;
+		Hour = lt->wHour;
+		Day = lt->wDay;
+		Month = lt->wMonth;
+		Year = lt->wYear;
 
 	}
 
@@ -62,18 +62,9 @@ class Debt
 
 private:
 
-	string description;
-	string name;
+	char name[120];
+	char description[240];
 	Date date;
-
-	void getDescription()
-	{
-		cin.clear();
-		cin.ignore(32767, '\n');
-		system("cls");
-		cout << "Введите описание долга: ";
-		getline(cin, description);
-	}
 
 	void getName()
 	{
@@ -81,7 +72,16 @@ private:
 		cin.ignore(32767, '\n');
 		system("cls");
 		cout << "Введите название долга: ";
-		getline(cin, name);
+		cin.getline(name, 120);
+	}
+
+	void getDescription()
+	{
+		cin.clear();
+		cin.ignore(32767, '\n');
+		system("cls");
+		cout << "Введите описание долга: ";
+		cin.getline(description, 240);
 	}
 
 public:
@@ -93,12 +93,12 @@ public:
 
 	}
 
-	string Name()
+	char* Name()
 	{
 		return name;
 	}
 
-	string Description()
+	char* Description()
 	{
 		return description;
 	}
@@ -118,7 +118,7 @@ bool Debt::Add()
 
 	system("cls");
 
-	shared_ptr <double> ans(new double);
+	shared_ptr <double> ans (new double);
 
 	cout << "0 - Отменить действие и вернуться в главное меню." << endl;
 	cout << "1 - Воздержаться от комментариев." << endl;
