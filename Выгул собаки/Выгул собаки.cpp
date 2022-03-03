@@ -1,5 +1,6 @@
 ﻿#include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <Windows.h>
 #include <ctime>
 #include "RFunc.h"
@@ -13,8 +14,8 @@ int main()
 	vector <Debt> Tims;
 	vector <Debt> Eves;
 
-	string pathTim = "Timuraz.txt";
-	string pathEve = "Evochkafa.txt";
+	string pathTim = "D:/Walking a PSINA/Timuraz.txt";
+	string pathEve = "D:/Walking a PSINA/Evochkafa.txt";
 
 	ifstream ifsTim, ifsEve;
 	ofstream ofsTim, ofsEve;
@@ -29,7 +30,7 @@ int main()
 		MsgBox("КРИТИЧЕСКАЯ ОШИБКА!", "Возникла критическая ошибка на этапе открытия файлов!");
 		cout << "Код ошибки: " << ex.what() << endl;
 		cout << "Скорее всего, у Вас недостаточно прав для выполнения этой операции." << endl;
-		return -1;
+		return -2;
 	}
 
 	Debt debt;

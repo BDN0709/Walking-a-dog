@@ -21,7 +21,7 @@ int Menu(vector <Debt>& Tims, vector <Debt>& Eves)
 		system("cls");
 
 		ShowTime();
-		ShowWhoseDay(Timur);
+		ShowWhoseDay(Eva);
 
 		shared_ptr <double> answer (new double);
 		cout << endl;
@@ -61,8 +61,8 @@ int Menu(vector <Debt>& Tims, vector <Debt>& Eves)
 		case 0: return 0; break;
 		case 1: AddDebt(Tims); break;
 		case 2: AddDebt(Eves); break;
-		case 3: /*Foo()*/ break;
-		case 4: /*Foo()*/ break;
+		case 3: DeleteDebt(Tims, Timur); break;
+		case 4: DeleteDebt(Eves, Eva); break;
 		case 5: ShowDebtsList(Tims, Timur); break;
 		case 6: ShowDebtsList(Eves, Eva); break;
 		}
@@ -77,6 +77,93 @@ void AddDebt(vector <Debt>& whoose)
 		return;
 	else
 		whoose.push_back(*debt);
+	
+	return;
+}
+
+void DeleteDebt(vector <Debt>& whoose, const Walker& walker)
+{
+	system("cls");
+
+	shared_ptr <double> ans (new double);
+
+	cout << "0 - Отменить действие и вернуться в главное меню." << endl;
+	cout << "1 - Удалить долг по номеру." << endl;
+
+	cout << "Ваш выбор: ";
+	cin >> *ans;
+
+	while (!cin || *ans != int(*ans) || *ans < 0 || *ans > 1)
+	{
+		if (!cin)
+		{
+			MsgBox("Ошибка!", "Пункт меню не может быть задан строкой!");
+			cin.clear();
+			cin.ignore(32767, '\n');
+		}
+		else if (*ans != int(*ans))
+			MsgBox("Ошибка!", "Пункт меню не может быть нецелым числом!");
+
+		else if (*ans < 0 || *ans > 1)
+			MsgBox("Ошибка!", "Выбран несуществующий пункт меню!");
+
+
+		cout << "0 - Отменить действие и вернуться в главное меню." << endl;
+		cout << "1 - Удалить долг по номеру." << endl;
+
+		cout << "Ваш выбор: ";
+		cin >> *ans;
+	}
+
+	if (*ans == 0)
+		return;
+	else
+	{
+		system("cls");
+
+		if (walker == Timur)
+			cout << "Введите номер долга Тимура, который необходимо удалить: ";
+		else
+			cout << "Введите номер долга Евы, который необходимо удалить: ";
+
+		cin >> *ans;
+
+		while (!cin || *ans != int(*ans) || *ans < 1 || *ans > whoose.size())
+		{
+			if (!cin)
+			{
+				MsgBox("Ошибка!", "Номер долга не может быть задан строкой!");
+				cin.clear();
+				cin.ignore(32767, '\n');
+			}
+			else if (*ans != int(*ans))
+				MsgBox("Ошибка!", "Номер долга не может быть нецелым числом!");
+
+			else if (*ans < 1 || *ans > whoose.size())
+				MsgBox("Ошибка!", "Введён несуществующий номер долга!");
+
+
+			if (walker == Timur)
+				cout << "Введите номер долга Тимура, который необходимо удалить: ";
+			else
+				cout << "Введите номер долга Евы, который необходимо удалить: ";
+
+			cin >> *ans;
+		}
+
+		whoose.erase(whoose.begin() + ((*ans) - 1));
+
+		system("cls");
+		
+		if (walker == Timur)
+			cout << "Долг Тимура №" << *ans << " был успешно удалён!" << endl;
+		else
+			cout << "Долг Евы №" << *ans << " был успешно удалён!" << endl;
+
+		system("pause");
+	}
+
+	return;
 }
 
 void ShowDebtsList(vector <Debt>& whoose, const Walker& walker)
@@ -86,14 +173,14 @@ void ShowDebtsList(vector <Debt>& whoose, const Walker& walker)
 	if (walker == Timur)
 	{
 		if (whoose.size())
-			cout << "Список долгов Тимура:" << endl << endl;
+			cout << "Список долгов Тимура:" << endl;
 		else
 			cout << "У Тимура нет долгов!" << endl;
 	}
 	else
 	{
 		if (whoose.size())
-			cout << "Список долгов Евы:" << endl << endl;
+			cout << "Список долгов Евы:" << endl;
 		else
 			cout << "У Евы нет долгов!" << endl;
 	}
@@ -102,8 +189,10 @@ void ShowDebtsList(vector <Debt>& whoose, const Walker& walker)
 	{
 		Date* date = new Date;
 		*date = whoose.at(i).Date();
+
+		cout << endl;
 		
-		cout << "-------------" << whoose.at(i).Name() << "---------------" << endl;
+		cout << '№' << i + 1 << "-------------" << whoose.at(i).Name() << "---------------" << endl;
 		cout << "Добавлен: "; printf("%02d.%02d.%04d в %02d:%02d:%02d\n", date->wDay(), date->wMonth(), date->wYear(),
 																	date->wHour(), date->wMinute(), date->wSecond());
 		cout << "Описание: " << whoose.at(i).Description() << endl;
@@ -117,13 +206,6 @@ void ShowDebtsList(vector <Debt>& whoose, const Walker& walker)
 
 	return;
 }
-
-
-
-
-
-
-
 
 void ShowTime()
 {   // gets real time and displays it
