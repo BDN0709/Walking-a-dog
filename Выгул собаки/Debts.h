@@ -144,67 +144,45 @@ bool Debt::Add()
 
 	if (*ans == 0)
 		return false;
-
-
-	getName();
-
-	system("cls");
-
-	cout << "1 - Воздержаться от комментариев." << endl;
-	cout << "2 - Ввести описание долга." << endl;
-
-	cout << "Ваш выбор: ";
-	cin >> *ans;
-
-	while (!cin || *ans != int(*ans) || *ans < 1 || *ans > 2)
+	else
 	{
-		if (!cin)
-		{
-			MsgBox("Ошибка!", "Пункт меню не может быть задан строкой!");
-			cin.clear();
-			cin.ignore(32767, '\n');
-		}
-		else if (*ans != int(*ans))
-			MsgBox("Ошибка!", "Пункт меню не может быть нецелым числом!");
+		getName();
 
-		else if (*ans < 1 || *ans > 2)
-			MsgBox("Ошибка!", "Выбран несуществующий пункт меню!");
-
+		system("cls");
 
 		cout << "1 - Воздержаться от комментариев." << endl;
 		cout << "2 - Ввести описание долга." << endl;
 
 		cout << "Ваш выбор: ";
 		cin >> *ans;
-	}
 
-	switch (int(*ans))
-	{
-	case 1:
+		while (!cin || *ans != int(*ans) || *ans < 1 || *ans > 2)
 		{
-			system("cls");
-	
-			cout << "Вы уверены? Возможно, в будущем этот комментарий поможет отстоять свою позицию." << endl;
+			if (!cin)
+			{
+				MsgBox("Ошибка!", "Пункт меню не может быть задан строкой!");
+				cin.clear();
+				cin.ignore(32767, '\n');
+			}
+			else if (*ans != int(*ans))
+				MsgBox("Ошибка!", "Пункт меню не может быть нецелым числом!");
+
+			else if (*ans < 1 || *ans > 2)
+				MsgBox("Ошибка!", "Выбран несуществующий пункт меню!");
+
+
 			cout << "1 - Воздержаться от комментариев." << endl;
 			cout << "2 - Ввести описание долга." << endl;
 
-			cout << "Ваш окончательный выбор: ";
+			cout << "Ваш выбор: ";
 			cin >> *ans;
+		}
 
-			while (!cin || *ans != int(*ans) || *ans < 1 || *ans > 2)
+		switch (int(*ans))
+		{
+			case 1:
 			{
-				if (!cin)
-				{
-					MsgBox("Ошибка!", "Пункт меню не может быть задан строкой!");
-					cin.clear();
-					cin.ignore(32767, '\n');
-				}
-				else if (*ans != int(*ans))
-					MsgBox("Ошибка!", "Пункт меню не может быть нецелым числом!");
-	
-				else if (*ans < 1 || *ans > 2)
-					MsgBox("Ошибка!", "Выбран несуществующий пункт меню!");
-
+				system("cls");
 
 				cout << "Вы уверены? Возможно, в будущем этот комментарий поможет отстоять свою позицию." << endl;
 				cout << "1 - Воздержаться от комментариев." << endl;
@@ -212,21 +190,44 @@ bool Debt::Add()
 
 				cout << "Ваш окончательный выбор: ";
 				cin >> *ans;
-			}
 
-			if (*ans == 1)
-				description[0] = '\0';
-			else
-				getDescription();
-	
-		} break;
+				while (!cin || *ans != int(*ans) || *ans < 1 || *ans > 2)
+				{
+					if (!cin)
+					{
+						MsgBox("Ошибка!", "Пункт меню не может быть задан строкой!");
+						cin.clear();
+						cin.ignore(32767, '\n');
+					}
+					else if (*ans != int(*ans))
+						MsgBox("Ошибка!", "Пункт меню не может быть нецелым числом!");
 
-		case 2: getDescription(); break;
+					else if (*ans < 1 || *ans > 2)
+						MsgBox("Ошибка!", "Выбран несуществующий пункт меню!");
+
+
+					cout << "Вы уверены? Возможно, в будущем этот комментарий поможет отстоять свою позицию." << endl;
+					cout << "1 - Воздержаться от комментариев." << endl;
+					cout << "2 - Ввести описание долга." << endl;
+
+					cout << "Ваш окончательный выбор: ";
+					cin >> *ans;
+				}
+
+				if (*ans == 1)
+					description[0] = '\0';
+				else
+					getDescription();
+
+			} break;
+
+			case 2: getDescription(); break;
+		}
+
+		system("cls");
+		cout << "Долг успешно добавлен!" << endl << endl;
+		system("pause");
+
+		return true;
 	}
-
-	system("cls");
-	cout << "Долг успешно добавлен!" << endl << endl;
-	system("pause");
-
-	return true;
 }

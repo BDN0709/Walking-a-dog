@@ -2,12 +2,9 @@
 
 #include <vector>
 #include "Debts.h"
-
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
-
-using namespace std;
 
 enum Walker
 {
@@ -23,9 +20,7 @@ int Menu(vector <Debt>& Tims, vector <Debt>& Eves)
 		ShowTime();
 		ShowWhoseDay(Eva);
 
-		shared_ptr <double> answer (new double);
-		cout << endl;
-		cout << "1 - Зафиксировать долг Тимура." << endl;
+		cout << endl << "1 - Зафиксировать долг Тимура." << endl;
 		cout << "2 - Зафиксировать долг Евы." << endl;
 		cout << "3 - Дать шанс Тимуру исправиться." << endl;
 		cout << "4 - Дать шанс Еве исправиться." << endl;
@@ -33,6 +28,7 @@ int Menu(vector <Debt>& Tims, vector <Debt>& Eves)
 		cout << "6 - Посмотреть список долгов Евы." << endl;
 		cout << "0 - Сохранить изменения и закрыть программу." << endl;
 
+		shared_ptr <double> answer(new double);
 		cin >> *answer;
 
 		while (!cin || *answer != int(*answer) || *answer < 0 || *answer > 6)
@@ -85,6 +81,18 @@ void DeleteDebt(vector <Debt>& whoose, const Walker& walker)
 {
 	system("cls");
 
+	if (whoose.empty())
+	{
+		if (walker == Timur)
+			cout << "У Тимура нет долгов, доступных для удаления!" << endl << endl;
+		else
+			cout << "У Евы нет долгов, доступных для удаления!" << endl << endl;
+
+		system("pause");
+
+		return;
+	}
+	
 	shared_ptr <double> ans (new double);
 
 	cout << "0 - Отменить действие и вернуться в главное меню." << endl;
@@ -121,6 +129,8 @@ void DeleteDebt(vector <Debt>& whoose, const Walker& walker)
 	{
 		system("cls");
 
+		ShowDebtsList(whoose, walker);
+
 		if (walker == Timur)
 			cout << "Введите номер долга Тимура, который необходимо удалить: ";
 		else
@@ -156,9 +166,9 @@ void DeleteDebt(vector <Debt>& whoose, const Walker& walker)
 		system("cls");
 		
 		if (walker == Timur)
-			cout << "Долг Тимура №" << *ans << " был успешно удалён!" << endl;
+			cout << "Долг Тимура №" << *ans << " был успешно удалён!" << endl << endl;
 		else
-			cout << "Долг Евы №" << *ans << " был успешно удалён!" << endl;
+			cout << "Долг Евы №" << *ans << " был успешно удалён!" << endl << endl;
 
 		system("pause");
 	}
@@ -175,32 +185,37 @@ void ShowDebtsList(vector <Debt>& whoose, const Walker& walker)
 		if (whoose.size())
 			cout << "Список долгов Тимура:" << endl;
 		else
-			cout << "У Тимура нет долгов!" << endl;
+			cout << "У Тимура нет долгов!" << endl << endl;
 	}
 	else
 	{
 		if (whoose.size())
 			cout << "Список долгов Евы:" << endl;
 		else
-			cout << "У Евы нет долгов!" << endl;
+			cout << "У Евы нет долгов!" << endl << endl;
 	}
 
 	for (int i = 0; i < whoose.size(); i++)
 	{
-		Date* date = new Date;
-		*date = whoose.at(i).Date();
-
 		cout << endl;
 		
-		cout << '№' << i + 1 << "-------------" << whoose.at(i).Name() << "---------------" << endl;
-		cout << "Добавлен: "; printf("%02d.%02d.%04d в %02d:%02d:%02d\n", date->wDay(), date->wMonth(), date->wYear(),
-																	date->wHour(), date->wMinute(), date->wSecond());
-		cout << "Описание: " << whoose.at(i).Description() << endl;
 
-		delete date;
+		for (int j = 0; j < 36; j++)
+		{
+			if (j == 18)
+				cout << "№" << i + 1;
+
+			cout << "--";
+		}
+		cout << endl;
+
+		cout << "Название: " << whoose.at(i).Name() << endl;
+		
+		cout << "Добавлен: "; printf("%02d.%02d.%04d в %02d:%02d:%02d\n", whoose.at(i).Date().wDay(), whoose.at(i).Date().wMonth(),
+			whoose.at(i).Date().wYear(), whoose.at(i).Date().wHour(), whoose.at(i).Date().wMinute(), whoose.at(i).Date().wSecond());
+		
+		cout << "Описание: " << whoose.at(i).Description() << endl << endl;
 	}
-
-	cout << endl;
 
 	system("pause");
 
@@ -220,11 +235,12 @@ void ShowTime()
 }
 
 void ShowWhoseDay(const Walker& walker)
-{  // не трогать то, за что не шаришь
-	HWND hwnd;
+{
 	wchar_t Title[100];
-	GetConsoleTitle(Title, 100); // Узнаем имя окна
-	hwnd = FindWindow(NULL, Title); // Узнаем hwnd окна
+	GetConsoleTitle(Title, 100);
+
+	HWND hwnd;
+	hwnd = FindWindow(NULL, Title);
 
 	HDC hdc = GetDC(hwnd);  // Получаем контекст для рисования
 
@@ -248,10 +264,13 @@ void ShowWhoseDay(const Walker& walker)
 void MsgBox(const char* Name, const char* Text)
 {
 	system("cls");
-	HWND hwnd;
+
 	wchar_t Title[100];
 	GetConsoleTitle(Title, 100);
-	hwnd = FindWindow(NULL, Title); // Узнаем hwnd окна
+
+	HWND hwnd;
+	hwnd = FindWindow(NULL, Title);
+
 	MessageBoxA(hwnd, Text, Name, NULL);
 
 	return;
